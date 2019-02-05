@@ -1,5 +1,5 @@
-require 'ortega/version'
+require 'ortega/http'
 
 module Ortega
-  
+  extend Ortega::HTTP
 end
