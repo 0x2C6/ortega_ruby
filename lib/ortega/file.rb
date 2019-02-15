@@ -9,13 +9,11 @@ class Ortega::File < File
   def self.get_path(options)
     file = new(options)
     file.instance_eval do 
-      @name.delete_suffix('/')
+      @name = @name.split('/').last
     end
     return join(
       "#{file.destination ? File.expand_path(file.destination) :  '.'}",
       file.name
     ) 
-  end
-
-  
+  end 
 end
