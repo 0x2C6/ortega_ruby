@@ -8,28 +8,21 @@ module Ortega
       options = options.with_indifferent_access
       url = HTTP.url_helper(url)
       options[:name] = url.path if options[:name].nil?
-      path = Ortega::File.get_path(options)
+      file = Ortega::File.get_path(options)
     
-      ::File.open(path, "wb+") do |file|
-        file.write Net::HTTP.get(url)
+      http = Net::HTTP.new(url.host, url.port)
+      http.use_ssl = true if url.scheme == 'https'
+      
+      http.start do |http|
+        http.request Net::HTTP::Get.new url do |response|
+          file.write(response)
+        end
       end
     end
 
-    def test(uri)
-      uri = URI(uri)
-      http = Net::HTTP.new(uri.host, uri.port)
-      http.use_ssl = true if uri.scheme == 'https'
-      a = 0
-      http.start do |http|
-        http.request Net::HTTP::Get.new uri do |response|
-          puts response.read_header['Content-Length']
-          # response.read_body do |chunk|
-          #   a += chunk.size
-          # end
-        end
-      end
-      puts a
-    end
+    # def test(uri)
+      
+    # end
   
     class << self
       def url_helper(url)
