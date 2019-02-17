@@ -29,7 +29,7 @@ module Ortega
 
       file.instance_eval do 
         @name = @name.split('/').last
-        @destination = ::.join(
+        @destination = ::File.join(
           "#{file.destination ? ::File.expand_path(file.destination) :  '.'}",
           file.name)
       end
