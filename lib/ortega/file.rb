@@ -9,7 +9,7 @@ module Ortega
     end
 
     def write(response)
-      File.open(@destination, 'wb') do |io|
+      ::File.open(@destination, 'wb') do |io|
         content_length = response.header['Content-Length']
         chunk_size = 0
         puts "Downloading #{@name}"
@@ -29,8 +29,8 @@ module Ortega
 
       file.instance_eval do 
         @name = @name.split('/').last
-        @destination = File.join(
-          "#{file.destination ? File.expand_path(file.destination) :  '.'}",
+        @destination = ::.join(
+          "#{file.destination ? ::File.expand_path(file.destination) :  '.'}",
           file.name)
       end
 
