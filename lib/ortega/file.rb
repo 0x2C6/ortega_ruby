@@ -11,11 +11,12 @@ class Ortega::File
     File.open(@destination, 'wb') do |io|
       content_length = response.header['Content-Length']
       chunk_size = 0
-      puts "Donwloading #{@name}"
+      puts "Downloading #{@name}"
       response.read_body do |chunk|
         io.write chunk
         chunk_size += chunk.size
-        $stdout.print "#{((chunk_size * 100) / content_length.to_i)}\r"
+        percent = ((chunk_size * 100) / content_length.to_i)
+        $stdout.print "#{'#' * percent} #{percent.to_s.rjust(103 - percent, ' ')} %\r"
         $stdout.flush
       end
     end
