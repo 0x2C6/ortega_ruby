@@ -19,11 +19,7 @@ module Ortega
         end
       end
     end
-
-    # def test(uri)
-      
-    # end
-  
+    
     class << self
       def url_helper(url)
         url.insert(0, 'http://') unless url.match(/http/) 
