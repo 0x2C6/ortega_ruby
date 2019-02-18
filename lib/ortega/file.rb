@@ -13,6 +13,10 @@ module Ortega
         content_length = response.header['Content-Length']
         chunk_size = 0
         puts "Downloading #{@name}"
+        # if response.is_a?(Net::HTTPRedirection)
+        #   puts 'redirect'
+        #   exit
+        # end
         response.read_body do |chunk|
           io.write chunk
           chunk_size += chunk.size
