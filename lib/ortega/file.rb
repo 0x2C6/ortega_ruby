@@ -43,7 +43,8 @@ module Ortega
       file = new(options)
 
       file.instance_eval do
-        @name = @name.split('/').last + (@extension[0] == '.' ? '' : @extension.insert(0, '.'))
+        @extension[0] == '.' ? '' : @extension.insert(0, '.')
+        @name = @name.split('/').last + @extension
         @destination = ::File.join(
           "#{file.destination ? ::File.expand_path(file.destination) :  '.'}",
           file.name)
