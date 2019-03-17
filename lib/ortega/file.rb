@@ -10,21 +10,30 @@ module Ortega
       @extension = args[:extension]
     end
 
-    def write(response)
+    def write(response, options)
       ::File.open(@destination, 'wb') do |io|
         content_length = response.header['Content-Length']
         chunk_size = 0
-        puts "Downloading #{@name}".green
         # if response.is_a?(Net::HTTPRedirection)
         #   puts 'redirect'
         #   exit
         # end
+        puts "Downloading #{@name}".green unless options[:bar] == false
         response.read_body do |chunk|
           io.write chunk
           chunk_size += chunk.size
           percent = ((chunk_size * 100) / content_length.to_i)
-          $stdout.print "#{'#'.green * percent} #{percent.to_s.rjust(103 - percent, ' ')} %\r"
-          $stdout.flush
+          if percent <= 20
+            hashtag = '#'.red
+          elsif percent > 20 && percent <= 80
+            hashtag = '#'.yellow
+          elsif percent > 80
+            hashtag = '#'.green
+          end
+          unless options[:bar] == false
+            $stdout.print "#{hashtag * percent} #{percent.to_s.rjust(103 - percent, ' ')} %\r"
+            $stdout.flush
+          end
         end
       end
     end
@@ -34,7 +43,7 @@ module Ortega
       file = new(options)
 
       file.instance_eval do
-        @name = @name.split('/').last + (@extension[0] == '.' ? @extension : @extension.insert(0, '.'))
+        @name = @name.split('/').last + (@extension[0] == '.' ? '' : @extension.insert(0, '.'))
         @destination = ::File.join(
           "#{file.destination ? ::File.expand_path(file.destination) :  '.'}",
           file.name)

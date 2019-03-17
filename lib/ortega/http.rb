@@ -12,6 +12,7 @@ module Ortega
       url = url_helper(url)
       options[:name] = url.path if options[:name].nil?
       options[:extension] = ::File.extname(url.path) if options[:extension].nil?
+      options[:bar] = true if options[:bar].nil?
       file = Ortega::File.get_path(options)
 
       http = Net::HTTP.new(url.host, url.port)
@@ -19,7 +20,7 @@ module Ortega
 
       http.start do |http|
         http.request Net::HTTP::Get.new url do |response|
-          file.write(response)
+          file.write(response, options)
         end
       end
     end
