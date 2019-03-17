@@ -29,6 +29,24 @@ Or install it yourself as:
   ############                                                      12 %
 ```
 
+You can specify target path, file name and its extension by passing arguments
+
+Example
+
+```ruby
+Ortega.download('example.com/downloadable_file.pdf', name: 'my_file.pdf', path: '~/Desktop')
+```
+If you want to hide progress bar, set ```bar``` option to false
+
+```ruby
+Ortega.download('example.com/downloadable_file.pdf', bar: false)
+```
+
+If url does not contain the extension, it should be good to spectify it manually as:
+```ruby
+Ortega.download('example.com/downloadable_file', extension: 'pdf')
+```
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
