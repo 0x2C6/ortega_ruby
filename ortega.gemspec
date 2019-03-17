@@ -26,4 +26,5 @@ require "ortega/version"
   spec.add_development_dependency "rspec", "~> 3.0"
 
   spec.add_dependency 'activesupport', '~> 5.2', '>= 5.2.2'
+  spec.add_dependency 'corol', '~> 0.2.0'
 end
